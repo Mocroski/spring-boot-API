@@ -2,6 +2,8 @@ package api.rest.model;
 
 import org.hibernate.annotations.ForeignKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class Telefone {
 	
 	private String numero;
 	
+	@JsonIgnore
 	@ForeignKey(name="usuario_id")
 	@ManyToOne
 	 private Usuario usuario;
