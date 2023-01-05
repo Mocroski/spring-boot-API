@@ -11,7 +11,7 @@ import api.rest.model.Usuario;
 import api.rest.repository.UsuarioRepository;
 
 @Service 
-public class ImplementaçãoUserDetailsService  implements UserDetailsService{
+public class ImplementacaoUserDetailsService  implements UserDetailsService{
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
