@@ -42,7 +42,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter{
 		//filtra requisicoes de login para autenticacao
 		
 		
-		//filtra demais requisicoes para verificar a presenca do token jwt
+		//filtra demais requisicoes para verificar a presenca do token jwt no header http
 	}
 	
 	
