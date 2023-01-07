@@ -2,11 +2,19 @@ package api.rest.security;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.support.ReplaceOverride;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import api.rest.ApplicationContextLoad;
+import api.rest.model.Usuario;
+import api.rest.repository.UsuarioRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
@@ -39,5 +47,39 @@ public class JWTTokenAutenticacaoService {
 		//escreve token como responsta no corpo http
 		response.getWriter().write("{\"Authorization\": \""+ token + "\"}");
 		
+	}
+	
+	//retorna o usuario validado com token ou caso invalido retorna null
+	
+	public Authentication getAuthentication(HttpServletRequest request) {
+		
+		//pega o token eviado no cabcalho http
+		String token = request.getHeader(HEADER_STRING);
+		
+		if(token != null) {
+			
+			//faz a validacao do token na requisicao
+			String user = Jwts.parser().setSigningKey(SECRET)
+					.parseClaimsJwt(token.replace(TOKEN_PREFIX, ""))
+					.getBody().getSubject(); //retorna usuarui
+			
+			if(user != null) {
+				
+				Usuario usuario = ApplicationContextLoad.getApplicationContext().getBean(UsuarioRepository.class).finduserbylogin(user);
+				
+				//retorna  o usuario logado
+				if(usuario != null) {
+					
+					return new UsernamePasswordAuthenticationToken(
+							usuario.getLogin(), 
+							usuario.getSenha(),
+							usuario.getAuthorities());
+				}
+			}
+		}
+			
+		
+			return null; //nao autorizado
+		}
 	}
 }
