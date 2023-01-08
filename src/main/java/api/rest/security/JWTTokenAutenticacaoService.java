@@ -2,8 +2,6 @@ package api.rest.security;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.support.ReplaceOverride;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -30,7 +28,7 @@ public class JWTTokenAutenticacaoService {
 	private static final String HEADER_STRING = "Authorizarion";
 	
 	//gerando token de autenticacao e adicionando o cabecalho e reposta http
-	public void addAuthentication(HttpServletResponse response, String username) throws Exception {
+	public void addAuthentication(HttpServletResponse response, String username) throws IOException {
 		
 		//montagem do token
 		String JWT = Jwts.builder()//chaama oa gerador de token
